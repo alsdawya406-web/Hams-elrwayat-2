@@ -222,7 +222,21 @@
       </form>
     </div>
   </div>
-    <script>
+  <!-- استدعاء مكتبات الفايربيس -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+  // تهيئة وتوصيل قاعدة البيانات
+  const firebaseConfig = {
+    databaseURL: "https://whisper-novels-default-rtdb.firebaseio.com"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  const db = firebase.database();
+  
     // كلمة السر المفتراضية لصفحة الأدمن (يمكنك تغييرها من هنا)
     const ADMIN_PASSWORD = "123";
 
@@ -352,30 +366,31 @@
       const category = document.getElementById('story-category-select').value;
       const body = document.getElementById('story-body').value.trim();
 
-      if(!author) { alert('برجاء اختيار كاتب!'); return; }
+      function saveStory(e) {
+  e.preventDefault();
+  const title = document.getElementById('story-title').value.trim();
+  const author = document.getElementById('story-author-select').value;
+  const category = document.getElementById('story-category-select').value;
+  const body = document.getElementById('story-body').value.trim();
 
-      db.stories.push({ title, author, category, body });
-      localStorage.setItem('app_stories', JSON.stringify(db.stories));
-      document.getElementById('story-form').reset();
-      loadAdminData();
-      alert('تم نشر القصة بنجاح!');
-    }
+  if (!author) { alert('برجاء اختيار كاتب!'); return; }
 
-    function deleteStory(index) {
-      if(!confirm('هل أنت تأكد من حذف هذه القصة؟')) return;
-      const db = getDB();
-      db.stories.splice(index, 1);
-      localStorage.setItem('app_stories', JSON.stringify(db.stories));
-      loadAdminData();
-    }
+  db.ref('stories').push({ title, author, category, body }, () => {
+    alert('تم نشر القصة بنجاح على قاعدة البيانات!');
+    document.getElementById('story-form').reset();
+  });
+}
 
-    function saveSettings(e) {
-      e.preventDefault();
-      const db = getDB();
-      db.settings.title = document.getElementById('site-title-input').value.trim();
-      localStorage.setItem('app_settings', JSON.stringify(db.settings));
-      alert('تم حفظ إعدادات الموقع!');
-    }
+function saveSettings(e) {
+  e.preventDefault();
+  const title = document.getElementById('site-title-input').value.trim();
+  const whatsapp = document.getElementById('site-whatsapp-input').value.trim();
+
+  db.ref('settings').set({ title, whatsapp }, () => {
+    alert('تم حفظ الإعدادات بنجاح!');
+  });
+                         }
+                          
   </script>
 </body>
 </html>
