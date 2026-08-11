@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم - همس الروايات</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+
+    :root {
+      --bg-dark: #050A1F;
+      --card-bg: #0B132B;
+      --neon-blue: #00F5D4;
+      --neon-purple: #7B2CBF;
+      --text-light: #E0E1DD;
+      --text-dim: #8D99AE;
+      --danger: #FF0055;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .admin-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--neon-purple);
+      margin-bottom: 25px;
+    }
+
+    h1 { color: var(--neon-blue); font-size: 1.8rem; }
+
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--neon-purple);
+      color: var(--text-light);
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--neon-purple);
+      color: #fff;
+      box-shadow: 0 0 15px var(--neon-purple);
+    }
+
+    .panel {
+      display: none;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .panel.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--neon-blue);
+      font-weight: bold;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--neon-purple);
+      background: rgba(5, 10, 31, 0.7);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    textarea { resize: vertical; min-height: 120px; }
+
+    .btn-submit {
+      background: var(--neon-blue);
+      color: var(--bg-dark);
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+      box-shadow: 0 0 15px var(--neon-blue);
+    }
+
+    .item-list {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .item-card {
+      background: rgba(0,0,0,0.3);
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-right: 4px solid var(--neon-blue);
+    }
+
+    .btn-del {
+      background: var(--danger);
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <header>
+      <h1><i class="fas fa-user-shield"></i> لوحة تحكم الأدمن</h1>
+      <a href="public.html" target="_blank" style="color: var(--neon-blue); text-decoration: none;"><i class="fas fa-external-link-alt"></i> معاينة الموقع</a>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="showTab('authors-panel', this)"><i class="fas fa-pen-fancy"></i> الكُتاب</button>
+      <button class="tab-btn" onclick="showTab('stories-panel', this)"><i class="fas fa-book"></i> القصص</button>
+      <button class="tab-btn" onclick="showTab('settings-panel', this)"><i class="fas fa-cog"></i> الإعدادات</button>
+    </div>
+
+    <!-- لوحة إدارة الكُتاب -->
+    <div id="authors-panel" class="panel active">
+      <h3 style="margin-bottom: 15px; color: var(--neon-blue);">إضافة كاتب جديد</h3>
+      <form id="author-form" onsubmit="saveAuthor(event)">
+        <div class="form-group">
+          <label>اسم الكاتب</label>
+          <input type="text" id="author-name" required placeholder="مثال: أحمد السعداوي">
+        </div>
+        <div class="form-group">
+          <label>السن</label>
+          <input type="text" id="author-age" required placeholder="مثال: 25 سنة">
+        </div>
+        <div class="form-group">
+          <label>نبذة عن الكاتب</label>
+          <textarea id="author-bio" required placeholder="اكتب نبذة قصيرة عن الكاتب..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">حفظ الكاتب</button>
+      </form>
+
+      <h3 style="margin-top: 30px; color: var(--neon-blue);">قائمة الكُتاب المسجلين</h3>
+      <div id="authors-manage-list" class="item-list"></div>
+    </div>
+
+    <!-- لوحة إدارة القصص -->
+    <div id="stories-panel" class="panel">
+      <h3 style="margin-bottom: 15px; color: var(--neon-blue);">إضافة قصة جديدة</h3>
+      <form id="story-form" onsubmit="saveStory(event)">
+        <div class="form-group">
+          <label>عنوان القصة</label>
+          <input type="text" id="story-title" required placeholder="عنوان القصة...">
+        </div>
+        <div class="form-group">
+          <label>اختر الكاتب</label>
+          <select id="story-author-select" required>
+            <option value="">-- اختر كاتب --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>التصنيف</label>
+          <select id="story-category" required>
+            <option value="رعب">رعب</option>
+            <option value="رومانسية">رومانسية</option>
+            <option value="خيال علمي">خيال علمي</option>
+            <option value="أكشن">أكشن</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>محتوى القصة</label>
+          <textarea id="story-body" style="min-height:200px;" required placeholder="اكتب نص القصة هنا..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">نشر القصة</button>
+      </form>
+
+      <h3 style="margin-top: 30px; color: var(--neon-blue);">قائمة القصص المنشورة</h3>
+      <div id="stories-manage-list" class="item-list"></div>
+    </div>
+
+    <!-- لوحة الإعدادات -->
+    <div id="settings-panel" class="panel">
+      <h3 style="margin-bottom: 15px; color: var(--neon-blue);">إعدادات الموقع العامة</h3>
+      <form onsubmit="saveSettings(event)">
+        <div class="form-group">
+          <label>اسم المنصة / الموقع</label>
+          <input type="text" id="site-title-input" required placeholder="همس الروايات">
+        </div>
+        <button type="submit" class="btn-submit">حفظ الإعدادات</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    function getDB() {
+      return {
+        authors: JSON.parse(localStorage.getItem('app_authors') || '[]'),
+        stories: JSON.parse(localStorage.getItem('app_stories') || '[]'),
+        settings: JSON.parse(localStorage.getItem('app_settings') || '{"title":"همس الروايات"}')
+      };
+    }
+
+    function showTab(id, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function loadAdminData() {
+      const db = getDB();
+
+      // تحميل قائمة الكُتاب
+      const authorsList = document.getElementById('authors-manage-list');
+      authorsList.innerHTML = db.authors.length ? db.authors.map((a, i) => `
+        <div class="item-card">
+          <div>
+            <strong>${a.name}</strong> <span style="color:var(--text-dim);">(${a.age})</span>
+          </div>
+          <button class="btn-del" onclick="deleteAuthor(${i})"><i class="fas fa-trash"></i> حذف</button>
+        </div>
+      `).join('') : '<p style="color:var(--text-dim);">لا يوجد كُتاب حالياً.</p>';
+
+      // تحديث قائمة اختيار الكاتب عند إضافة قصة
+      const authorSelect = document.getElementById('story-author-select');
+      authorSelect.innerHTML = '<option value="">-- اختر كاتب --</option>' + db.authors.map(a => `<option value="${a.name}">${a.name}</option>`).join('');
+
+      // تحميل قائمة القصص
+      const storiesList = document.getElementById('stories-manage-list');
+      storiesList.innerHTML = db.stories.length ? db.stories.map((s, i) => `
+        <div class="item-card">
+          <div>
+            <strong>${s.title}</strong> <span style="color:var(--text-dim);">الكاتب: ${s.author} | ${s.category}</span>
+          </div>
+          <button class="btn-del" onclick="deleteStory(${i})"><i class="fas fa-trash"></i> حذف</button>
+        </div>
+      `).join('') : '<p style="color:var(--text-dim);">لا توجد قصص منشورة.</p>';
+
+      // تحميل الإعدادات
+      document.getElementById('site-title-input').value = db.settings.title || 'همس الروايات';
+    }
+
+    function saveAuthor(e) {
+      e.preventDefault();
+      const db = getDB();
+      const name = document.getElementById('author-name').value.trim();
+      const age = document.getElementById('author-age').value.trim();
+      const bio = document.getElementById('author-bio').value.trim();
+
+      db.authors.push({ name, age, bio });
+      localStorage.setItem('app_authors', JSON.stringify(db.authors));
+      document.getElementById('author-form').reset();
+      loadAdminData();
+      alert('تم حفظ الكاتب بنجاح!');
+    }
+
+    function deleteAuthor(index) {
+      if(!confirm('هل أنت تأكد من حذف هذا الكاتب؟')) return;
+      const db = getDB();
+      db.authors.splice(index, 1);
+      localStorage.setItem('app_authors', JSON.stringify(db.authors));
+      loadAdminData();
+    }
+
+    function saveStory(e) {
+      e.preventDefault();
+      const db = getDB();
+      const title = document.getElementById('story-title').value.trim();
+      const author = document.getElementById('story-author-select').value;
+      const category = document.getElementById('story-category').value;
+      const body = document.getElementById('story-body').value.trim();
+
+      if(!author) { alert('برجاء اختيار كاتب!'); return; }
+
+      db.stories.push({ title, author, category, body });
+      localStorage.setItem('app_stories', JSON.stringify(db.stories));
+      document.getElementById('story-form').reset();
+      loadAdminData();
+      alert('تم نشر القصة بنجاح!');
+    }
+
+    function deleteStory(index) {
+      if(!confirm('هل أنت تأكد من حذف هذه القصة؟')) return;
+      const db = getDB();
+      db.stories.splice(index, 1);
+      localStorage.setItem('app_stories', JSON.stringify(db.stories));
+      loadAdminData();
+    }
+
+    function saveSettings(e) {
+      e.preventDefault();
+      const db = getDB();
+      db.settings.title = document.getElementById('site-title-input').value.trim();
+      localStorage.setItem('app_settings', JSON.stringify(db.settings));
+      alert('تم حفظ إعدادات الموقع!');
+    }
+
+    window.onload = loadAdminData;
+  </script>
+</body>
+</html>
