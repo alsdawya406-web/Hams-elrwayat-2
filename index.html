@@ -245,10 +245,18 @@
       if (input === ADMIN_PASSWORD) {
         document.getElementById('login-overlay').style.display = 'none';
         document.getElementById('admin-content').style.display = 'block';
-        loadAdminData();
+        loadDataFromFirebase();
+        
       } else {
         alert('كلمة السر غير صحيحة!');
       }
+      function loadDataFromFirebase() {
+  db.ref().on('value', (snapshot) => {
+    const data = snapshot.val() || {};
+    console.log("تم تحميل البيانات:", data);
+  });
+      }
+      
     }
 
     function getDB() {
