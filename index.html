@@ -7,406 +7,218 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
-
-    :root {
-      --bg-dark: #050A1F;
-      --card-bg: #0B132B;
-      --neon-blue: #00F5D4;
-      --neon-purple: #7B2CBF;
-      --text-light: #E0E1DD;
-      --text-dim: #8D99AE;
-      --danger: #FF0055;
-    }
-
+    :root { --bg-dark: #050A1F; --card-bg: #0B132B; --neon-blue: #00F5D4; --neon-purple: #7B2CBF; --text-light: #E0E1DD; --text-dim: #8D99AE; }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-light); padding: 20px; }
+    .container { max-width: 900px; margin: auto; }
+    h1, h2, h3 { color: var(--neon-blue); margin-bottom: 15px; }
+    .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05); }
+    input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--neon-blue); background: rgba(0,0,0,0.3); color: #fff; outline: none; }
+    
+    .btn-neon { background: transparent; color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+    @media (hover: hover) { .btn-neon:hover { background: var(--neon-blue); color: var(--bg-dark); box-shadow: 0 0 15px var(--neon-blue); } }
+    .btn-neon:active { background: var(--neon-blue); color: var(--bg-dark); }
+    .btn-danger { color: #ff4d4d; border-color: #ff4d4d; }
+    @media (hover: hover) { .btn-danger:hover { background: #ff4d4d; color: #fff; box-shadow: 0 0 15px #ff4d4d; } }
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    /* شاشة تسجيل الدخول */
-    #login-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--bg-dark);
-      display: flex; justify-content: center; align-items: center;
-      z-index: 10000;
-    }
-
-    .login-box {
-      background: var(--card-bg);
-      padding: 30px; border-radius: 12px;
-      border: 1px solid var(--neon-purple);
-      text-align: center; width: 90%; max-width: 400px;
-      box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
-    }
-
-    .login-box input {
-      width: 100%; padding: 12px; margin: 15px 0;
-      border-radius: 8px; border: 1px solid var(--neon-blue);
-      background: rgba(5,10,31,0.8); color: #fff; text-align: center;
-    }
-
-    .admin-container {
-      max-width: 900px; margin: 0 auto; display: none;
-    }
-
-    header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-bottom: 20px; border-bottom: 2px solid var(--neon-purple); margin-bottom: 25px;
-    }
-
-    h1 { color: var(--neon-blue); font-size: 1.8rem; }
-
-    .nav-tabs { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
-
-    .tab-btn {
-      background: var(--card-bg); border: 1px solid var(--neon-purple);
-      color: var(--text-light); padding: 10px 20px; border-radius: 8px;
-      cursor: pointer; font-weight: bold; transition: 0.3s;
-    }
-
-    .tab-btn.active, .tab-btn:hover {
-      background: var(--neon-purple); color: #fff; box-shadow: 0 0 15px var(--neon-purple);
-    }
-
-    .panel {
-      display: none; background: var(--card-bg); padding: 25px;
-      border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    .panel.active { display: block; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .form-group { margin-bottom: 18px; }
-    label { display: block; margin-bottom: 8px; color: var(--neon-blue); font-weight: bold; }
-
-    input, textarea, select {
-      width: 100%; padding: 12px; border-radius: 8px;
-      border: 1px solid var(--neon-purple); background: rgba(5, 10, 31, 0.7);
-      color: #fff; font-size: 1rem; outline: none;
-    }
-
-    textarea { resize: vertical; min-height: 120px; }
-
-    .btn-submit {
-      background: var(--neon-blue); color: var(--bg-dark); border: none;
-      padding: 12px 25px; border-radius: 8px; font-weight: bold;
-      cursor: pointer; font-size: 1rem; transition: 0.3s;
-    }
-
-    .btn-submit:hover { box-shadow: 0 0 15px var(--neon-blue); }
-
-    .item-list { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
-
-    .item-card {
-      background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;
-      display: flex; justify-content: space-between; align-items: center;
-      border-right: 4px solid var(--neon-blue);
-    }
-
-    .btn-del {
-      background: var(--danger); color: #fff; border: none;
-      padding: 6px 12px; border-radius: 6px; cursor: pointer;
-    }
+    .grid-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+    .item-card { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 15px; border-right: 3px solid var(--neon-purple); display: flex; justify-content: space-between; align-items: center; }
+    .stats-box { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .stat-card { background: rgba(0,245,212,0.05); padding: 15px; border-radius: 8px; border: 1px solid var(--neon-blue); text-align: center; }
+    .stat-number { font-size: 1.8rem; font-weight: bold; color: var(--neon-blue); }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1><i class="fas fa-user-shield"></i> لوحة التحكم - همس الروايات</h1>
 
-  <!-- شاشة كلمة السر -->
-  <div id="login-overlay">
-    <div class="login-box">
-      <h2 style="color: var(--neon-blue);"><i class="fas fa-lock"></i> تسجيل الدخول</h2>
-      <input type="password" id="admin-pass" placeholder="أدخل كلمة السر">
-      <button class="btn-submit" style="width: 100%;" onclick="checkPassword()">دخول</button>
+    <!-- قسم الإحصائيات -->
+    <div class="card">
+      <h2><i class="fas fa-chart-line"></i> الإحصائيات العامة</h2>
+      <div class="stats-box">
+        <div class="stat-card"><div>إجمالي الكُتاب</div><div class="stat-number" id="stat-authors-count">0</div></div>
+        <div class="stat-card"><div>إجمالي الروايات</div><div class="stat-number" id="stat-stories-count">0</div></div>
+      </div>
+      
+      <h3 style="font-size: 1.1rem; color: var(--neon-purple);"><i class="fas fa-users"></i> متابعين الكُتاب</h3>
+      <div id="stats-authors-details" style="margin-bottom: 15px;"></div>
+
+      <h3 style="font-size: 1.1rem; color: var(--neon-purple);"><i class="fas fa-eye"></i> تفاصيل الروايات (المشاهدات والتعليقات)</h3>
+      <div id="stats-stories-details"></div>
+    </div>
+
+    <!-- إضافة كاتب -->
+    <div class="card">
+      <h2><i class="fas fa-user-plus"></i> إضافة كاتب جديد</h2>
+      <input type="text" id="author-name" placeholder="اسم الكاتب">
+      <input type="number" id="author-age" placeholder="العمر">
+      <textarea id="author-bio" placeholder="نبذة عن الكاتب"></textarea>
+      <button class="btn-neon" onclick="addAuthor()"><i class="fas fa-plus"></i> حفظ الكاتب</button>
+    </div>
+
+    <!-- إضافة قصة -->
+    <div class="card">
+      <h2><i class="fas fa-book-medical"></i> إضافة قصة جديد</h2>
+      <input type="text" id="story-title" placeholder="عنوان القصة">
+      <select id="story-author-select"><option value="">اختر الكاتب</option></select>
+      <select id="story-category">
+        <option value="رعب">رعب</option>
+        <option value="رومانسية">رومانسية</option>
+        <option value="خيال علمي">خيال علمي</option>
+        <option value="أكشن">أكشن</option>
+      </select>
+      <textarea id="story-body" rows="6" placeholder="محتوى القصة..."></textarea>
+      <button class="btn-neon" onclick="addStory()"><i class="fas fa-plus"></i> نشر القصة</button>
+    </div>
+
+    <!-- إدارة الكُتاب -->
+    <div class="card">
+      <h2><i class="fas fa-users-cog"></i> إدارة الكُتاب</h2>
+      <div class="grid-list" id="admin-authors-list"></div>
+    </div>
+
+    <!-- إدارة القصص -->
+    <div class="card">
+      <h2><i class="fas fa-tasks"></i> إدارة القصص</h2>
+      <div class="grid-list" id="admin-stories-list"></div>
     </div>
   </div>
 
-  <div class="admin-container" id="admin-content">
-    <header>
-      <h1><i class="fas fa-user-shield"></i> لوحة تحكم الأدمن</h1>
-      <a href="public.html" target="_blank" style="color: var(--neon-blue); text-decoration: none;"><i class="fas fa-external-link-alt"></i> معاينة الموقع</a>
-    </header>
-
-    <div class="nav-tabs">
-      <button class="tab-btn active" onclick="showTab('authors-panel', this)"><i class="fas fa-pen-fancy"></i> الكُتاب</button>
-      <button class="tab-btn" onclick="showTab('stories-panel', this)"><i class="fas fa-book"></i> القصص</button>
-      <button class="tab-btn" onclick="showTab('categories-panel', this)"><i class="fas fa-layer-group"></i> التصنيفات</button>
-      <button class="tab-btn" onclick="showTab('settings-panel', this)"><i class="fas fa-cog"></i> الإعدادات</button>
-    </div>
-
-    <!-- لوحة إدارة الكُتاب -->
-    <div id="authors-panel" class="panel active">
-      <h3 style="margin-bottom: 15px; color: var(--neon-blue);">إضافة كاتب جديد</h3>
-      <form id="author-form" onsubmit="saveAuthor(event)">
-        <div class="form-group">
-          <label>اسم الكاتب</label>
-          <input type="text" id="author-name" required placeholder="مثال: أحمد السعداوي">
-        </div>
-        <div class="form-group">
-          <label>السن</label>
-          <input type="text" id="author-age" required placeholder="مثال: 25 سنة">
-        </div>
-        <div class="form-group">
-          <label>رابط صورة الكاتب (اختر رابط صورة دائرية)</label>
-          <input type="url" id="author-img" placeholder="https://example.com/photo.jpg">
-        </div>
-        <div class="form-group">
-          <label>نبذة عن الكاتب</label>
-          <textarea id="author-bio" required placeholder="اكتب نبذة قصيرة عن الكاتب..."></textarea>
-        </div>
-        <button type="submit" class="btn-submit">حفظ الكاتب</button>
-      </form>
-
-      <h3 style="margin-top: 30px; color: var(--neon-blue);">قائمة الكُتاب المسجلين</h3>
-      <div id="authors-manage-list" class="item-list"></div>
-    </div>
-
-    <!-- لوحة إدارة القصص -->
-    <div id="stories-panel" class="panel">
-      <h3 style="margin-bottom: 15px; color: var(--neon-blue);">إضافة قصة جديدة</h3>
-      <form id="story-form" onsubmit="saveStory(event)">
-        <div class="form-group">
-          <label>عنوان القصة</label>
-          <input type="text" id="story-title" required placeholder="عنوان القصة...">
-        </div>
-        <div class="form-group">
-          <label>اختر الكاتب</label>
-          <select id="story-author-select" required>
-            <option value="">-- اختر كاتب --</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>التصنيف</label>
-          <select id="story-category-select" required></select>
-        </div>
-        <div class="form-group">
-          <label>محتوى القصة</label>
-          <textarea id="story-body" style="min-height:200px;" required placeholder="اكتب نص القصة هنا..."></textarea>
-        </div>
-        <button type="submit" class="btn-submit">نشر القصة</button>
-      </form>
-
-      <h3 style="margin-top: 30px; color: var(--neon-blue);">قائمة القصص المنشورة</h3>
-      <div id="stories-manage-list" class="item-list"></div>
-    </div>
-
-    <!-- لوحة إدارة التصنيفات الجديدة -->
-    <div id="categories-panel" class="panel">
-      <h3 style="margin-bottom: 15px; color: var(--neon-blue);">إضافة تصنيف جديد</h3>
-      <form onsubmit="saveCategory(event)">
-        <div class="form-group">
-          <label>اسم التصنيف</label>
-          <input type="text" id="cat-name-input" required placeholder="مثال: غموض، دراما...">
-        </div>
-        <button type="submit" class="btn-submit">حفظ التصنيف</button>
-      </form>
-
-      <h3 style="margin-top: 30px; color: var(--neon-blue);">التصنيفات المتاحة</h3>
-      <div id="categories-manage-list" class="item-list"></div>
-    </div>
-
-    <!-- لوحة الإعدادات -->
-    <div id="settings-panel" class="panel">
-      <h3 style="margin-bottom: 15px; color: var(--neon-blue);">إعدادات الموقع العامة</h3>
-      <form onsubmit="saveSettings(event)">
-        <div class="form-group">
-          <label>اسم المنصة / الموقع</label>
-          <input type="text" id="site-title-input" required placeholder="همس الروايات">
-        </div>
-        <button type="submit" class="btn-submit">حفظ الإعدادات</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- استدعاء مكتبات الفايربيس -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <script>
-    // تهيئة قاعدة البيانات الفايربيس
-    const firebaseConfig = {
-      databaseURL: "https://whisper-novels-default-rtdb.firebaseio.com"
-    };
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    const firebaseConfig = { databaseURL: "https://whisper-novels-default-rtdb.firebaseio.com" };
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // كلمة السر الافتراضية لصفحة الأدمن
-    const ADMIN_PASSWORD = "123";
-
-    function checkPassword() {
-      const input = document.getElementById('admin-pass').value;
-      if (input === ADMIN_PASSWORD) {
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('admin-content').style.display = 'block';
-        loadAdminData();
-      } else {
-        alert('كلمة السر غير صحيحة!');
-      }
-    }
-
-    function getDB() {
-      return {
-        authors: JSON.parse(localStorage.getItem('app_authors') || '[]'),
-        stories: JSON.parse(localStorage.getItem('app_stories') || '[]'),
-        categories: JSON.parse(localStorage.getItem('app_categories') || '["رعب", "رومانسية", "خيال علمي", "أكشن"]'),
-        settings: JSON.parse(localStorage.getItem('app_settings') || '{"title":"همس الروايات"}')
-      };
-    }
-
-    function showTab(id, btn) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      btn.classList.add('active');
-    }
+    let authorsData = {}, storiesData = {}, commentsData = {};
 
     function loadAdminData() {
-      const dbData = getDB();
+      db.ref('authors').on('value', snap => {
+        authorsData = snap.val() || {};
+        renderAdminAuthors();
+        updateStats();
+      });
 
-      // 1. تحميل قائمة الكُتاب
-      const authorsList = document.getElementById('authors-manage-list');
-      authorsList.innerHTML = dbData.authors.length ? dbData.authors.map((a, i) => `
-        <div class="item-card">
-          <div>
-            <strong>${a.name}</strong> <span style="color:var(--text-dim);">(${a.age})</span>
-          </div>
-          <button class="btn-del" onclick="deleteAuthor(${i})"><i class="fas fa-trash"></i> حذف</button>
-        </div>
-      `).join('') : '<p style="color:var(--text-dim);">لا يوجد كُتاب حالياً.</p>';
+      db.ref('stories').on('value', snap => {
+        storiesData = snap.val() || {};
+        renderAdminStories();
+        updateStats();
+      });
 
-      // تحديث قائمة اختيار الكاتب عند إضافة قصة
-      const authorSelect = document.getElementById('story-author-select');
-      authorSelect.innerHTML = '<option value="">-- اختر كاتب --</option>' + dbData.authors.map(a => `<option value="${a.name}">${a.name}</option>`).join('');
-
-      // 2. تحميل قائمة التصنيفات وتغذية القوائم المنسدلة
-      const catSelect = document.getElementById('story-category-select');
-      catSelect.innerHTML = dbData.categories.map(c => `<option value="${c}">${c}</option>`).join('');
-
-      const categoriesList = document.getElementById('categories-manage-list');
-      categoriesList.innerHTML = dbData.categories.length ? dbData.categories.map((c, i) => `
-        <div class="item-card">
-          <div><strong>${c}</strong></div>
-          <button class="btn-del" onclick="deleteCategory(${i})"><i class="fas fa-trash"></i> حذف</button>
-        </div>
-      `).join('') : '<p style="color:var(--text-dim);">لا توجد تصنيفات.</p>';
-
-      // 3. تحميل قائمة القصص
-      const storiesList = document.getElementById('stories-manage-list');
-      storiesList.innerHTML = dbData.stories.length ? dbData.stories.map((s, i) => `
-        <div class="item-card">
-          <div>
-            <strong>${s.title}</strong> <span style="color:var(--text-dim);">الكاتب: ${s.author} | ${s.category}</span>
-          </div>
-          <button class="btn-del" onclick="deleteStory(${i})"><i class="fas fa-trash"></i> حذف</button>
-        </div>
-      `).join('') : '<p style="color:var(--text-dim);">لا توجد قصص منشورة.</p>';
-
-      // 4. تحميل الإعدادات
-      document.getElementById('site-title-input').value = dbData.settings.title || 'همس الروايات';
+      db.ref('comments').on('value', snap => {
+        commentsData = snap.val() || {};
+        updateStats();
+      });
     }
 
-    function saveAuthor(e) {
-      e.preventDefault();
-      const localDb = getDB();
+    function addAuthor() {
       const name = document.getElementById('author-name').value.trim();
       const age = document.getElementById('author-age').value.trim();
-      const img = document.getElementById('author-img').value.trim();
       const bio = document.getElementById('author-bio').value.trim();
 
-      localDb.authors.push({ name, age, img, bio });
-      localStorage.setItem('app_authors', JSON.stringify(localDb.authors));
-      
-      // حفظ سحابي في الفايربيس
-      db.ref('authors').push({ name, age, img, bio });
+      if (!name) return alert('برجاء كتابة اسم الكاتب');
 
-      document.getElementById('author-form').reset();
-      loadAdminData();
-      alert('تم حفظ الكاتب بنجاح!');
+      const newRef = db.ref('authors').push();
+      newRef.set({ name, age, bio }).then(() => {
+        alert('تمت إضافة الكاتب بنجاح');
+        document.getElementById('author-name').value = '';
+        document.getElementById('author-age').value = '';
+        document.getElementById('author-bio').value = '';
+      });
     }
 
-    function deleteAuthor(index) {
-      if(!confirm('هل أنت تأكد من حذف هذا الكاتب؟')) return;
-      const localDb = getDB();
-      localDb.authors.splice(index, 1);
-      localStorage.setItem('app_authors', JSON.stringify(localDb.authors));
-      loadAdminData();
+    function addStory() {
+      const title = document.getElementById('story-title').value.trim();
+      const author = document.getElementById('story-author-select').value;
+      const category = document.getElementById('story-category').value;
+      const body = document.getElementById('story-body').value.trim();
+
+      if (!title || !author || !body) return alert('برجاء استكمال بيانات القصة');
+
+      const newRef = db.ref('stories').push();
+      newRef.set({ title, author, category, body, views: 0 }).then(() => {
+        alert('تم نشر القصة بنجاح');
+        document.getElementById('story-title').value = '';
+        document.getElementById('story-body').value = '';
+      });
     }
 
-    function saveCategory(e) {
-      e.preventDefault();
-      const localDb = getDB();
-      const catName = document.getElementById('cat-name-input').value.trim();
-      if(!localDb.categories.includes(catName)) {
-        localDb.categories.push(catName);
-        localStorage.setItem('app_categories', JSON.stringify(localDb.categories));
-        document.getElementById('cat-name-input').value = '';
-        loadAdminData();
-        alert('تم إضافة التصنيف بنجاح!');
-      } else {
-        alert('هذا التصنيف موجود بالفعل!');
+    function deleteAuthor(key) {
+      if (confirm('هل أنت تأكد من مسح هذا الكاتب؟')) {
+        db.ref('authors/' + key).remove().then(() => alert('تم مسح الكاتب'));
       }
     }
 
-    function deleteCategory(index) {
-      if(!confirm('هل أنت تأكد من حذف هذا التصنيف؟')) return;
-      const localDb = getDB();
-      localDb.categories.splice(index, 1);
-      localStorage.setItem('app_categories', JSON.stringify(localDb.categories));
-      loadAdminData();
+    function deleteStory(key) {
+      if (confirm('هل أنت تأكد من مسح هذه القصة؟')) {
+        db.ref('stories/' + key).remove().then(() => alert('تم مسح القصة'));
+      }
     }
 
-    function saveStory(e) {
-      e.preventDefault();
-      const localDb = getDB();
-      const title = document.getElementById('story-title').value.trim();
-      const author = document.getElementById('story-author-select').value;
-      const category = document.getElementById('story-category-select').value;
-      const body = document.getElementById('story-body').value.trim();
+    function renderAdminAuthors() {
+      const list = document.getElementById('admin-authors-list');
+      const select = document.getElementById('story-author-select');
+      list.innerHTML = '';
+      select.innerHTML = '<option value="">اختر الكاتب</option>';
 
-      if(!author) { alert('برجاء اختيار كاتب!'); return; }
-
-      localDb.stories.push({ title, author, category, body });
-      localStorage.setItem('app_stories', JSON.stringify(localDb.stories));
-
-      // حفظ سحابي في الفايربيس
-      db.ref('stories').push({ title, author, category, body });
-
-      document.getElementById('story-form').reset();
-      loadAdminData();
-      alert('تم نشر القصة بنجاح!');
+      for (let key in authorsData) {
+        const a = authorsData[key];
+        select.innerHTML += `<option value="${a.name}">${a.name}</option>`;
+        list.innerHTML += `
+          <div class="item-card">
+            <div><strong>${a.name}</strong></div>
+            <button class="btn-neon btn-danger" onclick="deleteAuthor('${key}')"><i class="fas fa-trash"></i> مسح</button>
+          </div>`;
+      }
     }
 
-    function deleteStory(index) {
-      if(!confirm('هل أنت تأكد من حذف هذه القصة؟')) return;
-      const localDb = getDB();
-      localDb.stories.splice(index, 1);
-      localStorage.setItem('app_stories', JSON.stringify(localDb.stories));
-      loadAdminData();
+    function renderAdminStories() {
+      const list = document.getElementById('admin-stories-list');
+      list.innerHTML = '';
+
+      for (let key in storiesData) {
+        const s = storiesData[key];
+        list.innerHTML += `
+          <div class="item-card">
+            <div>
+              <strong>${s.title}</strong><br>
+              <small style="color:var(--text-dim);">${s.author}</small>
+            </div>
+            <button class="btn-neon btn-danger" onclick="deleteStory('${key}')"><i class="fas fa-trash"></i> مسح</button>
+          </div>`;
+      }
     }
 
-    function saveSettings(e) {
-      e.preventDefault();
-      const localDb = getDB();
-      localDb.settings.title = document.getElementById('site-title-input').value.trim();
-      localStorage.setItem('app_settings', JSON.stringify(localDb.settings));
+    function updateStats() {
+      const authorKeys = Object.keys(authorsData);
+      const storyKeys = Object.keys(storiesData);
 
-      // حفظ سحابي في الفايربيس
-      db.ref('settings').set({ title: localDb.settings.title });
+      document.getElementById('stat-authors-count').innerText = authorKeys.length;
+      document.getElementById('stat-stories-count').innerText = storyKeys.length;
 
-      alert('تم حفظ إعدادات الموقع!');
+      // متابعين الكُتاب من LocalStorage (المحاكي)
+      const follows = JSON.parse(localStorage.getItem('user_follows') || '[]');
+      let authorStatsHTML = '';
+      authorKeys.forEach(k => {
+        const name = authorsData[k].name;
+        const count = follows.filter(a => a === name).length;
+        authorStatsHTML += `<div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">${name}: <strong>${count} متابع</strong></div>`;
+      });
+      document.getElementById('stats-authors-details').innerHTML = authorStatsHTML || '<small style="color:var(--text-dim);">لا توجد بيانات</small>';
+
+      // تفاصيل المشاهدات والتعليقات للقصص
+      let storyStatsHTML = '';
+      storyKeys.forEach(k => {
+        const s = storiesData[k];
+        const safeKey = encodeURIComponent(s.title).replace(/\./g, '%2E');
+        const commentCount = commentsData[safeKey] ? Object.keys(commentsData[safeKey]).length : 0;
+        storyStatsHTML += `<div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05);">${s.title}: <strong>${s.views || 0} مشاهدة</strong> | <strong>${commentCount} تعليق</strong></div>`;
+      });
+      document.getElementById('stats-stories-details').innerHTML = storyStatsHTML || '<small style="color:var(--text-dim);">لا توجد بيانات</small>';
     }
+
+    window.onload = loadAdminData;
   </script>
 </body>
 </html>
