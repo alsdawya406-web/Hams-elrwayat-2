@@ -241,6 +241,12 @@
     const ADMIN_PASSWORD = "123";
 
     function checkPassword() {
+      function getDB() {
+      return {
+        authors: JSON.parse(localStorage.getItem('app_authors') || '[]'),
+        stories: JSON.parse(localStorage.getItem('app_stories') || '[]'),
+        categories: JSON.parse(localStorage.getItem('app_categories') || '["رعب", "رومانسية", "خيال علمي", "أكشن"]'),
+        settings: JSON.parse(localStorage.getItem('app_settings') || '{"title":"همس الروايات"}')
       const input = document.getElementById('admin-pass').value;
       if (input === ADMIN_PASSWORD) {
         document.getElementById('login-overlay').style.display = 'none';
@@ -258,13 +264,6 @@
       }
       
     }
-
-    function getDB() {
-      return {
-        authors: JSON.parse(localStorage.getItem('app_authors') || '[]'),
-        stories: JSON.parse(localStorage.getItem('app_stories') || '[]'),
-        categories: JSON.parse(localStorage.getItem('app_categories') || '["رعب", "رومانسية", "خيال علمي", "أكشن"]'),
-        settings: JSON.parse(localStorage.getItem('app_settings') || '{"title":"همس الروايات"}')
       };
     }
 
