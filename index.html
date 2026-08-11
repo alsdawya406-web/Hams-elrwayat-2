@@ -27,52 +27,55 @@
       padding: 20px;
     }
 
+    /* شاشة تسجيل الدخول */
+    #login-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-dark);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 10000;
+    }
+
+    .login-box {
+      background: var(--card-bg);
+      padding: 30px; border-radius: 12px;
+      border: 1px solid var(--neon-purple);
+      text-align: center; width: 90%; max-width: 400px;
+      box-shadow: 0 0 20px rgba(123, 44, 191, 0.3);
+    }
+
+    .login-box input {
+      width: 100%; padding: 12px; margin: 15px 0;
+      border-radius: 8px; border: 1px solid var(--neon-blue);
+      background: rgba(5,10,31,0.8); color: #fff; text-align: center;
+    }
+
     .admin-container {
-      max-width: 900px;
-      margin: 0 auto;
+      max-width: 900px; margin: 0 auto; display: none;
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 20px;
-      border-bottom: 2px solid var(--neon-purple);
-      margin-bottom: 25px;
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 20px; border-bottom: 2px solid var(--neon-purple); margin-bottom: 25px;
     }
 
     h1 { color: var(--neon-blue); font-size: 1.8rem; }
 
-    .nav-tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
+    .nav-tabs { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
 
     .tab-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--neon-purple);
-      color: var(--text-light);
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
+      background: var(--card-bg); border: 1px solid var(--neon-purple);
+      color: var(--text-light); padding: 10px 20px; border-radius: 8px;
+      cursor: pointer; font-weight: bold; transition: 0.3s;
     }
 
     .tab-btn.active, .tab-btn:hover {
-      background: var(--neon-purple);
-      color: #fff;
-      box-shadow: 0 0 15px var(--neon-purple);
+      background: var(--neon-purple); color: #fff; box-shadow: 0 0 15px var(--neon-purple);
     }
 
     .panel {
-      display: none;
-      background: var(--card-bg);
-      padding: 25px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.05);
+      display: none; background: var(--card-bg); padding: 25px;
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
       animation: fadeIn 0.3s ease-out;
     }
 
@@ -83,76 +86,51 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--neon-blue);
-      font-weight: bold;
-    }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 8px; color: var(--neon-blue); font-weight: bold; }
 
     input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--neon-purple);
-      background: rgba(5, 10, 31, 0.7);
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
+      width: 100%; padding: 12px; border-radius: 8px;
+      border: 1px solid var(--neon-purple); background: rgba(5, 10, 31, 0.7);
+      color: #fff; font-size: 1rem; outline: none;
     }
 
     textarea { resize: vertical; min-height: 120px; }
 
     .btn-submit {
-      background: var(--neon-blue);
-      color: var(--bg-dark);
-      border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.3s;
+      background: var(--neon-blue); color: var(--bg-dark); border: none;
+      padding: 12px 25px; border-radius: 8px; font-weight: bold;
+      cursor: pointer; font-size: 1rem; transition: 0.3s;
     }
 
-    .btn-submit:hover {
-      box-shadow: 0 0 15px var(--neon-blue);
-    }
+    .btn-submit:hover { box-shadow: 0 0 15px var(--neon-blue); }
 
-    .item-list {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    .item-list { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
 
     .item-card {
-      background: rgba(0,0,0,0.3);
-      padding: 15px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;
+      display: flex; justify-content: space-between; align-items: center;
       border-right: 4px solid var(--neon-blue);
     }
 
     .btn-del {
-      background: var(--danger);
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
+      background: var(--danger); color: #fff; border: none;
+      padding: 6px 12px; border-radius: 6px; cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <div class="admin-container">
+  <!-- شاشة كلمة السر -->
+  <div id="login-overlay">
+    <div class="login-box">
+      <h2 style="color: var(--neon-blue);"><i class="fas fa-lock"></i> تسجيل الدخول</h2>
+      <input type="password" id="admin-pass" placeholder="أدخل كلمة السر">
+      <button class="btn-submit" style="width: 100%;" onclick="checkPassword()">دخول</button>
+    </div>
+  </div>
+
+  <div class="admin-container" id="admin-content">
     <header>
       <h1><i class="fas fa-user-shield"></i> لوحة تحكم الأدمن</h1>
       <a href="public.html" target="_blank" style="color: var(--neon-blue); text-decoration: none;"><i class="fas fa-external-link-alt"></i> معاينة الموقع</a>
@@ -161,6 +139,7 @@
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="showTab('authors-panel', this)"><i class="fas fa-pen-fancy"></i> الكُتاب</button>
       <button class="tab-btn" onclick="showTab('stories-panel', this)"><i class="fas fa-book"></i> القصص</button>
+      <button class="tab-btn" onclick="showTab('categories-panel', this)"><i class="fas fa-layer-group"></i> التصنيفات</button>
       <button class="tab-btn" onclick="showTab('settings-panel', this)"><i class="fas fa-cog"></i> الإعدادات</button>
     </div>
 
@@ -175,6 +154,10 @@
         <div class="form-group">
           <label>السن</label>
           <input type="text" id="author-age" required placeholder="مثال: 25 سنة">
+        </div>
+        <div class="form-group">
+          <label>رابط صورة الكاتب (اختر رابط صورة دائرية)</label>
+          <input type="url" id="author-img" placeholder="https://example.com/photo.jpg">
         </div>
         <div class="form-group">
           <label>نبذة عن الكاتب</label>
@@ -203,12 +186,7 @@
         </div>
         <div class="form-group">
           <label>التصنيف</label>
-          <select id="story-category" required>
-            <option value="رعب">رعب</option>
-            <option value="رومانسية">رومانسية</option>
-            <option value="خيال علمي">خيال علمي</option>
-            <option value="أكشن">أكشن</option>
-          </select>
+          <select id="story-category-select" required></select>
         </div>
         <div class="form-group">
           <label>محتوى القصة</label>
@@ -219,6 +197,21 @@
 
       <h3 style="margin-top: 30px; color: var(--neon-blue);">قائمة القصص المنشورة</h3>
       <div id="stories-manage-list" class="item-list"></div>
+    </div>
+
+    <!-- لوحة إدارة التصنيفات الجديدة -->
+    <div id="categories-panel" class="panel">
+      <h3 style="margin-bottom: 15px; color: var(--neon-blue);">إضافة تصنيف جديد</h3>
+      <form onsubmit="saveCategory(event)">
+        <div class="form-group">
+          <label>اسم التصنيف</label>
+          <input type="text" id="cat-name-input" required placeholder="مثال: غموض، دراما...">
+        </div>
+        <button type="submit" class="btn-submit">حفظ التصنيف</button>
+      </form>
+
+      <h3 style="margin-top: 30px; color: var(--neon-blue);">التصنيفات المتاحة</h3>
+      <div id="categories-manage-list" class="item-list"></div>
     </div>
 
     <!-- لوحة الإعدادات -->
@@ -233,11 +226,26 @@
       </form>
     </div>
   </div>
-  <script>
+    <script>
+    // كلمة السر المفتراضية لصفحة الأدمن (يمكنك تغييرها من هنا)
+    const ADMIN_PASSWORD = "123";
+
+    function checkPassword() {
+      const input = document.getElementById('admin-pass').value;
+      if (input === ADMIN_PASSWORD) {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('admin-content').style.display = 'block';
+        loadAdminData();
+      } else {
+        alert('كلمة السر غير صحيحة!');
+      }
+    }
+
     function getDB() {
       return {
         authors: JSON.parse(localStorage.getItem('app_authors') || '[]'),
         stories: JSON.parse(localStorage.getItem('app_stories') || '[]'),
+        categories: JSON.parse(localStorage.getItem('app_categories') || '["رعب", "رومانسية", "خيال علمي", "أكشن"]'),
         settings: JSON.parse(localStorage.getItem('app_settings') || '{"title":"همس الروايات"}')
       };
     }
@@ -252,7 +260,7 @@
     function loadAdminData() {
       const db = getDB();
 
-      // تحميل قائمة الكُتاب
+      // 1. تحميل قائمة الكُتاب
       const authorsList = document.getElementById('authors-manage-list');
       authorsList.innerHTML = db.authors.length ? db.authors.map((a, i) => `
         <div class="item-card">
@@ -267,7 +275,19 @@
       const authorSelect = document.getElementById('story-author-select');
       authorSelect.innerHTML = '<option value="">-- اختر كاتب --</option>' + db.authors.map(a => `<option value="${a.name}">${a.name}</option>`).join('');
 
-      // تحميل قائمة القصص
+      // 2. تحميل قائمة التصنيفات وتغذية القوائم المنسدلة
+      const catSelect = document.getElementById('story-category-select');
+      catSelect.innerHTML = db.categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      const categoriesList = document.getElementById('categories-manage-list');
+      categoriesList.innerHTML = db.categories.length ? db.categories.map((c, i) => `
+        <div class="item-card">
+          <div><strong>${c}</strong></div>
+          <button class="btn-del" onclick="deleteCategory(${i})"><i class="fas fa-trash"></i> حذف</button>
+        </div>
+      `).join('') : '<p style="color:var(--text-dim);">لا توجد تصنيفات.</p>';
+
+      // 3. تحميل قائمة القصص
       const storiesList = document.getElementById('stories-manage-list');
       storiesList.innerHTML = db.stories.length ? db.stories.map((s, i) => `
         <div class="item-card">
@@ -278,7 +298,7 @@
         </div>
       `).join('') : '<p style="color:var(--text-dim);">لا توجد قصص منشورة.</p>';
 
-      // تحميل الإعدادات
+      // 4. تحميل الإعدادات
       document.getElementById('site-title-input').value = db.settings.title || 'همس الروايات';
     }
 
@@ -287,9 +307,10 @@
       const db = getDB();
       const name = document.getElementById('author-name').value.trim();
       const age = document.getElementById('author-age').value.trim();
+      const img = document.getElementById('author-img').value.trim();
       const bio = document.getElementById('author-bio').value.trim();
 
-      db.authors.push({ name, age, bio });
+      db.authors.push({ name, age, img, bio });
       localStorage.setItem('app_authors', JSON.stringify(db.authors));
       document.getElementById('author-form').reset();
       loadAdminData();
@@ -304,12 +325,35 @@
       loadAdminData();
     }
 
+    function saveCategory(e) {
+      e.preventDefault();
+      const db = getDB();
+      const catName = document.getElementById('cat-name-input').value.trim();
+      if(!db.categories.includes(catName)) {
+        db.categories.push(catName);
+        localStorage.setItem('app_categories', JSON.stringify(db.categories));
+        document.getElementById('cat-name-input').value = '';
+        loadAdminData();
+        alert('تم إضافة التصنيف بنجاح!');
+      } else {
+        alert('هذا التصنيف موجود بالفعل!');
+      }
+    }
+
+    function deleteCategory(index) {
+      if(!confirm('هل أنت تأكد من حذف هذا التصنيف؟')) return;
+      const db = getDB();
+      db.categories.splice(index, 1);
+      localStorage.setItem('app_categories', JSON.stringify(db.categories));
+      loadAdminData();
+    }
+
     function saveStory(e) {
       e.preventDefault();
       const db = getDB();
       const title = document.getElementById('story-title').value.trim();
       const author = document.getElementById('story-author-select').value;
-      const category = document.getElementById('story-category').value;
+      const category = document.getElementById('story-category-select').value;
       const body = document.getElementById('story-body').value.trim();
 
       if(!author) { alert('برجاء اختيار كاتب!'); return; }
@@ -336,8 +380,6 @@
       localStorage.setItem('app_settings', JSON.stringify(db.settings));
       alert('تم حفظ إعدادات الموقع!');
     }
-
-    window.onload = loadAdminData;
   </script>
 </body>
 </html>
