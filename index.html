@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <script>
-    if (sessionStorage.getItem("authenticated") !== "true") {
-        window.location.href = "login.html";
-    }
-  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لوحة التحكم - همس الروايات</title>
@@ -34,7 +29,7 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="admin-panel" style="display: none;">
     <h1><i class="fas fa-user-shield"></i> لوحة التحكم - همس الروايات</h1>
 
     <!-- قسم الإحصائيات -->
@@ -92,6 +87,19 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <script>
+    const ADMIN_PASSWORD = "1/10/2011"; // يمكنك تغيير باسورد لوحة التحكم من هنا
+
+    function checkPassword() {
+      const input = prompt("برجاء أدخل كلمة المرور لدخول لوحة التحكم:");
+      if (input === ADMIN_PASSWORD) {
+        document.getElementById('admin-panel').style.display = 'block';
+        loadAdminData();
+      } else {
+        alert("كلمة المرور غير صحيحة!");
+        document.body.innerHTML = '<h2 style="color: #ff4d4d; text-align: center; margin-top: 50px;">غير مصرح لك بالدخول</h2>';
+      }
+    }
+
     const firebaseConfig = { databaseURL: "https://whisper-novels-default-rtdb.firebaseio.com" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
@@ -202,7 +210,6 @@
       document.getElementById('stat-authors-count').innerText = authorKeys.length;
       document.getElementById('stat-stories-count').innerText = storyKeys.length;
 
-      // متابعين الكُتاب من LocalStorage (المحاكي)
       const follows = JSON.parse(localStorage.getItem('user_follows') || '[]');
       let authorStatsHTML = '';
       authorKeys.forEach(k => {
@@ -212,7 +219,6 @@
       });
       document.getElementById('stats-authors-details').innerHTML = authorStatsHTML || '<small style="color:var(--text-dim);">لا توجد بيانات</small>';
 
-      // تفاصيل المشاهدات والتعليقات للقصص
       let storyStatsHTML = '';
       storyKeys.forEach(k => {
         const s = storiesData[k];
@@ -223,7 +229,7 @@
       document.getElementById('stats-stories-details').innerHTML = storyStatsHTML || '<small style="color:var(--text-dim);">لا توجد بيانات</small>';
     }
 
-    window.onload = loadAdminData;
+    window.onload = checkPassword;
   </script>
 </body>
 </html>
