@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>تسجيل الدخول</title>
+<title>تسجيل الدخول - همس الروايات</title>
 
 <style>
 *{
@@ -15,8 +15,7 @@
 
 :root{
     --gold:#ffd86b;
-    --gold2:#ffb300;
-    --bg:#02040a;
+    --gold2:#ffad00;
 }
 
 body{
@@ -24,18 +23,17 @@ body{
     min-height:100vh;
     overflow:hidden;
     background:
-        radial-gradient(
-            circle at 50% 35%,
-            #151a24 0%,
-            #070a11 42%,
-            #02040a 75%
-        );
+        radial-gradient(circle at 50% 35%,
+        #151a24 0%,
+        #070a11 42%,
+        #02040a 75%);
     color:white;
+    transition:background 1.5s ease;
 }
 
-/* =================================
+/* =========================
    الإضاءة
-================================= */
+========================= */
 
 .ambient-light{
     position:fixed;
@@ -57,7 +55,6 @@ body{
     filter:blur(12px);
 
     pointer-events:none;
-
     transition:opacity 1.5s ease;
 
     z-index:1;
@@ -67,10 +64,9 @@ body.lit .ambient-light{
     opacity:1;
 }
 
-
-/* =================================
+/* =========================
    السقف
-================================= */
+========================= */
 
 .ceiling{
     position:fixed;
@@ -82,16 +78,14 @@ body.lit .ambient-light{
 
     background:#151923;
 
-    box-shadow:
-        0 2px 10px rgba(0,0,0,.8);
+    box-shadow:0 2px 10px rgba(0,0,0,.8);
 
     z-index:10;
 }
 
-
-/* =================================
+/* =========================
    الأباجورة
-================================= */
+========================= */
 
 .lamp{
     position:fixed;
@@ -108,9 +102,6 @@ body.lit .ambient-light{
     z-index:8;
 }
 
-
-/* السلك من السقف */
-
 .top-wire{
     width:4px;
     height:100px;
@@ -125,22 +116,18 @@ body.lit .ambient-light{
     border-radius:5px;
 }
 
-
-/* جسم الأباجورة */
-
 .shade{
     position:relative;
 
     width:155px;
     height:78px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #353b47,
-            #151922 60%,
-            #080a0e
-        );
+    background:linear-gradient(
+        135deg,
+        #353b47,
+        #151922 60%,
+        #080a0e
+    );
 
     clip-path:polygon(
         18% 0,
@@ -149,17 +136,12 @@ body.lit .ambient-light{
         0 100%
     );
 
-    filter:
-        drop-shadow(
-            0 12px 15px rgba(0,0,0,.7)
-        );
+    filter:drop-shadow(
+        0 12px 15px rgba(0,0,0,.7)
+    );
 
-    transition:
-        filter .8s ease;
+    transition:.8s ease;
 }
-
-
-/* اللمبة */
 
 .bulb{
     position:absolute;
@@ -176,13 +158,8 @@ body.lit .ambient-light{
 
     background:#252525;
 
-    transition:
-        background .8s ease,
-        box-shadow .8s ease;
+    transition:.8s ease;
 }
-
-
-/* عند تشغيل النور */
 
 body.lit .bulb{
     background:#fff4b5;
@@ -195,22 +172,14 @@ body.lit .bulb{
 }
 
 body.lit .shade{
-    filter:
-        drop-shadow(
-            0 0 28px rgba(255,213,90,.38)
-        );
+    filter:drop-shadow(
+        0 0 28px rgba(255,213,90,.38)
+    );
 }
 
-
-/* =================================
+/* =========================
    سلك السحب
-================================= */
-
-.pull-area{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
+========================= */
 
 .pull-string{
     position:relative;
@@ -229,16 +198,12 @@ body.lit .shade{
 
     touch-action:none;
 
-    transition:
-        transform .15s ease;
+    transition:transform .35s ease;
 }
 
 .pull-string:active{
     cursor:grabbing;
 }
-
-
-/* كرة السحب */
 
 .pull-handle{
     position:absolute;
@@ -253,31 +218,19 @@ body.lit .shade{
 
     border-radius:50%;
 
-    background:
-        linear-gradient(
-            100deg,
-            #222,
-            #a5a5a5,
-            #252525
-        );
+    background:linear-gradient(
+        100deg,
+        #222,
+        #a5a5a5,
+        #252525
+    );
 
-    box-shadow:
-        0 5px 12px rgba(0,0,0,.7);
-
-    transition:
-        box-shadow .4s ease;
+    box-shadow:0 5px 12px rgba(0,0,0,.7);
 }
 
-body.lit .pull-handle{
-    box-shadow:
-        0 0 15px rgba(255,210,80,.3),
-        0 5px 12px rgba(0,0,0,.7);
-}
-
-
-/* =================================
-   نص السحب
-================================= */
+/* =========================
+   التعليمات
+========================= */
 
 .pull-hint{
     position:fixed;
@@ -291,26 +244,21 @@ body.lit .pull-handle{
 
     font-size:13px;
 
-    opacity:.9;
-
-    transition:
-        opacity .6s,
-        transform .6s;
+    transition:.6s;
 
     z-index:5;
+
+    white-space:nowrap;
 }
 
 body.lit .pull-hint{
     opacity:0;
-    transform:
-        translateX(-50%)
-        translateY(-10px);
+    transform:translateX(-50%) translateY(-10px);
 }
 
-
-/* =================================
-   بطاقة الدخول
-================================= */
+/* =========================
+   Login Card
+========================= */
 
 .login-card{
     position:fixed;
@@ -331,15 +279,13 @@ body.lit .pull-hint{
 
     border-radius:22px;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(20,27,42,.90),
-            rgba(7,11,20,.88)
-        );
+    background:linear-gradient(
+        145deg,
+        rgba(20,27,42,.90),
+        rgba(7,11,20,.88)
+    );
 
-    border:
-        1px solid rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.10);
 
     box-shadow:
         0 30px 80px rgba(0,0,0,.65),
@@ -368,11 +314,6 @@ body.lit .login-card{
         scale(1);
 }
 
-
-/* =================================
-   أيقونة صغيرة
-================================= */
-
 .login-icon{
     width:52px;
     height:52px;
@@ -385,49 +326,25 @@ body.lit .login-card{
 
     border-radius:15px;
 
-    background:
-        rgba(255,207,76,.10);
+    background:rgba(255,207,76,.10);
 
-    border:
-        1px solid rgba(255,207,76,.22);
+    border:1px solid rgba(255,207,76,.22);
 
     font-size:22px;
-
-    box-shadow:
-        0 0 25px rgba(255,200,60,.08);
 }
-
-
-/* =================================
-   العناوين
-================================= */
 
 .login-card h1{
     font-size:25px;
-
-    font-weight:700;
-
     margin-bottom:8px;
-
-    letter-spacing:.2px;
 }
 
 .subtitle{
     color:#8993a6;
-
     font-size:13px;
-
     margin-bottom:25px;
 }
 
-
-/* =================================
-   INPUT
-================================= */
-
 .input-wrapper{
-    position:relative;
-
     margin-bottom:15px;
 }
 
@@ -435,18 +352,15 @@ body.lit .login-card{
     width:100%;
     height:53px;
 
-    padding:
-        0 17px;
+    padding:0 17px;
 
     border-radius:13px;
 
-    border:
-        1px solid rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.10);
 
     outline:none;
 
-    background:
-        rgba(255,255,255,.045);
+    background:rgba(255,255,255,.045);
 
     color:white;
 
@@ -455,30 +369,19 @@ body.lit .login-card{
     transition:.3s;
 }
 
+.input-wrapper input:focus{
+    border-color:rgba(255,210,80,.65);
+
+    box-shadow:
+        0 0 0 3px rgba(255,210,80,.07);
+}
+
 .input-wrapper input::placeholder{
     color:#687286;
 }
 
-.input-wrapper input:focus{
-    border-color:
-        rgba(255,210,80,.65);
-
-    background:
-        rgba(255,255,255,.07);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(255,210,80,.07);
-}
-
-
-/* =================================
-   BUTTON
-================================= */
-
 .login-btn{
     position:relative;
-
     overflow:hidden;
 
     width:100%;
@@ -487,17 +390,15 @@ body.lit .login-card{
     border:0;
     border-radius:13px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #ffd34e,
-            #ffad00
-        );
+    background:linear-gradient(
+        135deg,
+        #ffd34e,
+        #ffad00
+    );
 
     color:#17120a;
 
     font-size:16px;
-
     font-weight:700;
 
     cursor:pointer;
@@ -505,24 +406,15 @@ body.lit .login-card{
     transition:.3s;
 
     box-shadow:
-        0 10px 30px
-        rgba(255,177,0,.18);
+        0 10px 30px rgba(255,177,0,.18);
 }
 
 .login-btn:hover{
     transform:translateY(-2px);
 
     box-shadow:
-        0 14px 35px
-        rgba(255,177,0,.28);
+        0 14px 35px rgba(255,177,0,.28);
 }
-
-.login-btn:active{
-    transform:scale(.98);
-}
-
-
-/* لمعان الزر */
 
 .login-btn::after{
     content:"";
@@ -537,13 +429,12 @@ body.lit .login-card{
 
     transform:skewX(-20deg);
 
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,.45),
-            transparent
-        );
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.45),
+        transparent
+    );
 
     transition:.6s;
 }
@@ -551,11 +442,6 @@ body.lit .login-card{
 .login-btn:hover::after{
     left:130%;
 }
-
-
-/* =================================
-   ERROR
-================================= */
 
 .error{
     display:none;
@@ -566,11 +452,9 @@ body.lit .login-card{
 
     border-radius:9px;
 
-    background:
-        rgba(239,68,68,.08);
+    background:rgba(239,68,68,.08);
 
-    border:
-        1px solid rgba(239,68,68,.15);
+    border:1px solid rgba(239,68,68,.15);
 
     color:#ff7777;
 
@@ -580,40 +464,23 @@ body.lit .login-card{
 }
 
 @keyframes shake{
-    0%,100%{
-        transform:translateX(0);
-    }
-
-    25%{
-        transform:translateX(-6px);
-    }
-
-    75%{
-        transform:translateX(6px);
-    }
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-6px)}
+    75%{transform:translateX(6px)}
 }
-
-
-/* =================================
-   FOOTER
-================================= */
 
 .footer{
     margin-top:20px;
-
     color:#4e596c;
-
     font-size:11px;
 }
 
-
-/* =================================
-   SUCCESS SCREEN
-================================= */
+/* =========================
+   Success
+========================= */
 
 .success{
     position:fixed;
-
     inset:0;
 
     z-index:30;
@@ -622,11 +489,9 @@ body.lit .login-card{
 
     align-items:center;
     justify-content:center;
-
     flex-direction:column;
 
-    background:
-        #02040a;
+    background:#02040a;
 }
 
 .success-icon{
@@ -650,17 +515,9 @@ body.lit .login-card{
 }
 
 @keyframes pop{
-    0%{
-        transform:scale(0);
-    }
-
-    70%{
-        transform:scale(1.12);
-    }
-
-    100%{
-        transform:scale(1);
-    }
+    0%{transform:scale(0)}
+    70%{transform:scale(1.12)}
+    100%{transform:scale(1)}
 }
 
 .success h2{
@@ -673,11 +530,6 @@ body.lit .login-card{
     margin-top:7px;
     font-size:13px;
 }
-
-
-/* =================================
-   MOBILE
-================================= */
 
 @media(max-width:600px){
 
@@ -703,84 +555,50 @@ body.lit .login-card{
         padding:28px 22px;
     }
 
-    .login-card h1{
-        font-size:23px;
-    }
-
     .ambient-light{
         width:550px;
         height:550px;
     }
 }
-
 </style>
 </head>
 
-
 <body>
 
-<!-- الإضاءة -->
 <div class="ambient-light"></div>
 
-<!-- السقف -->
 <div class="ceiling"></div>
-
-
-<!-- ==========================
-     الأباجورة
-========================== -->
 
 <div class="lamp">
 
     <div class="top-wire"></div>
 
     <div class="shade">
-
         <div class="bulb"></div>
-
     </div>
 
-    <div class="pull-area">
-
-        <div
-            class="pull-string"
-            id="pullString"
-        >
-
-            <div class="pull-handle"></div>
-
-        </div>
-
+    <div
+        class="pull-string"
+        id="pullString"
+    >
+        <div class="pull-handle"></div>
     </div>
 
 </div>
-
-
-<!-- تعليمات السحب -->
 
 <div class="pull-hint">
     اسحب السلك لتشغيل الإضاءة
 </div>
 
-
-<!-- ==========================
-     LOGIN
-========================== -->
-
 <div class="login-card">
 
-    <div class="login-icon">
-        🔐
-    </div>
+    <div class="login-icon">🔐</div>
 
-    <h1>
-        مرحبًا بك
-    </h1>
+    <h1>مرحبًا بك</h1>
 
     <p class="subtitle">
-        أدخل رمز الدخول للوصول إلى النظام
+        أدخل رمز الدخول للوصول إلى لوحة التحكم
     </p>
-
 
     <div class="input-wrapper">
 
@@ -793,14 +611,12 @@ body.lit .login-card{
 
     </div>
 
-
     <button
         class="login-btn"
         onclick="checkPassword()"
     >
         دخول
     </button>
-
 
     <div
         class="error"
@@ -809,43 +625,26 @@ body.lit .login-card{
         ⚠️ رمز الدخول غير صحيح
     </div>
 
-
     <div class="footer">
-        🔒 نظام دخول آمن
+        🔒 لوحة تحكم همس الروايات
     </div>
 
 </div>
-
-
-<!-- ==========================
-     SUCCESS
-========================== -->
 
 <div
     class="success"
     id="successScreen"
 >
 
-    <div class="success-icon">
-        ✓
-    </div>
+    <div class="success-icon">✓</div>
 
-    <h2>
-        تم تسجيل الدخول بنجاح
-    </h2>
+    <h2>تم تسجيل الدخول بنجاح</h2>
 
-    <p>
-        جاري فتح الصفحة...
-    </p>
+    <p>جاري فتح لوحة التحكم...</p>
 
 </div>
 
-
 <script>
-
-/* =================================
-   السلك
-================================= */
 
 const pullString =
     document.getElementById("pullString");
@@ -854,11 +653,6 @@ let dragging = false;
 let startY = 0;
 let pulled = false;
 
-
-/* =================================
-   بداية السحب
-================================= */
-
 function startPull(e){
 
     dragging = true;
@@ -866,15 +660,7 @@ function startPull(e){
     startY =
         e.clientY ??
         e.touches[0].clientY;
-
-    pullString.style.transition =
-        "none";
 }
-
-
-/* =================================
-   أثناء السحب
-================================= */
 
 function movePull(e){
 
@@ -896,12 +682,6 @@ function movePull(e){
             `translateY(${amount}px)`;
     }
 
-
-    /*
-       تشغيل الأباجورة
-       بعد سحب السلك
-    */
-
     if(
         distance > 35 &&
         !pulled
@@ -913,37 +693,17 @@ function movePull(e){
     }
 }
 
-
-/* =================================
-   نهاية السحب
-================================= */
-
 function endPull(){
 
-    if(!dragging) return;
-
     dragging = false;
-
-    pullString.style.transition =
-        "transform .35s ease";
 
     pullString.style.transform =
         "translateY(0)";
 }
 
-
-/* =================================
-   تشغيل النور
-================================= */
-
 function turnLightOn(){
 
     document.body.classList.add("lit");
-
-    /*
-       صوت Click بسيط باستخدام Web Audio
-       بدون أي ملف خارجي
-    */
 
     try{
 
@@ -960,14 +720,10 @@ function turnLightOn(){
         const gain =
             audio.createGain();
 
-        oscillator.frequency.value =
-            500;
-
-        gain.gain.value =
-            .04;
+        oscillator.frequency.value = 500;
+        gain.gain.value = .04;
 
         oscillator.connect(gain);
-
         gain.connect(audio.destination);
 
         oscillator.start();
@@ -977,13 +733,7 @@ function turnLightOn(){
         );
 
     }catch(e){}
-
 }
-
-
-/* =================================
-   Mouse
-================================= */
 
 pullString.addEventListener(
     "mousedown",
@@ -999,11 +749,6 @@ document.addEventListener(
     "mouseup",
     endPull
 );
-
-
-/* =================================
-   Touch
-================================= */
 
 pullString.addEventListener(
     "touchstart",
@@ -1023,9 +768,9 @@ document.addEventListener(
 );
 
 
-/* =================================
+/* =========================
    تسجيل الدخول
-================================= */
+========================= */
 
 function checkPassword(){
 
@@ -1041,7 +786,6 @@ function checkPassword(){
             "errorMsg"
         );
 
-
     if(userPass === password){
 
         sessionStorage.setItem(
@@ -1049,27 +793,22 @@ function checkPassword(){
             "true"
         );
 
-        error.style.display =
-            "none";
-
+        error.style.display = "none";
 
         document.getElementById(
             "successScreen"
-        ).style.display =
-            "flex";
-
+        ).style.display = "flex";
 
         setTimeout(() => {
 
             window.location.href =
-                "index.html";
+                "admin.html";
 
         },1200);
 
     }else{
 
-        error.style.display =
-            "block";
+        error.style.display = "block";
 
         document.getElementById(
             "passInput"
@@ -1080,11 +819,6 @@ function checkPassword(){
         ).focus();
     }
 }
-
-
-/* =================================
-   Enter
-================================= */
 
 document
 .getElementById("passInput")
