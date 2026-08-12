@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>تسجيل الدخول</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --gold:#ffd86b;
+    --gold2:#ffb300;
+    --bg:#02040a;
+}
+
+body{
+    font-family:"Segoe UI",Tahoma,sans-serif;
+    min-height:100vh;
+    overflow:hidden;
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            #151a24 0%,
+            #070a11 42%,
+            #02040a 75%
+        );
+    color:white;
+}
+
+/* =================================
+   الإضاءة
+================================= */
+
+.ambient-light{
+    position:fixed;
+    top:40px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:700px;
+    height:650px;
+
+    background:radial-gradient(
+        ellipse,
+        rgba(255,215,100,.32) 0%,
+        rgba(255,196,50,.12) 35%,
+        transparent 70%
+    );
+
+    opacity:0;
+    filter:blur(12px);
+
+    pointer-events:none;
+
+    transition:opacity 1.5s ease;
+
+    z-index:1;
+}
+
+body.lit .ambient-light{
+    opacity:1;
+}
+
+
+/* =================================
+   السقف
+================================= */
+
+.ceiling{
+    position:fixed;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:7px;
+
+    background:#151923;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,.8);
+
+    z-index:10;
+}
+
+
+/* =================================
+   الأباجورة
+================================= */
+
+.lamp{
+    position:fixed;
+
+    top:7px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    z-index:8;
+}
+
+
+/* السلك من السقف */
+
+.top-wire{
+    width:4px;
+    height:100px;
+
+    background:linear-gradient(
+        90deg,
+        #171717,
+        #777,
+        #171717
+    );
+
+    border-radius:5px;
+}
+
+
+/* جسم الأباجورة */
+
+.shade{
+    position:relative;
+
+    width:155px;
+    height:78px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #353b47,
+            #151922 60%,
+            #080a0e
+        );
+
+    clip-path:polygon(
+        18% 0,
+        82% 0,
+        100% 100%,
+        0 100%
+    );
+
+    filter:
+        drop-shadow(
+            0 12px 15px rgba(0,0,0,.7)
+        );
+
+    transition:
+        filter .8s ease;
+}
+
+
+/* اللمبة */
+
+.bulb{
+    position:absolute;
+
+    bottom:-19px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:43px;
+    height:43px;
+
+    border-radius:50%;
+
+    background:#252525;
+
+    transition:
+        background .8s ease,
+        box-shadow .8s ease;
+}
+
+
+/* عند تشغيل النور */
+
+body.lit .bulb{
+    background:#fff4b5;
+
+    box-shadow:
+        0 0 12px #fff,
+        0 0 28px #ffe47a,
+        0 0 55px #ffd54a,
+        0 0 100px rgba(255,190,30,.75);
+}
+
+body.lit .shade{
+    filter:
+        drop-shadow(
+            0 0 28px rgba(255,213,90,.38)
+        );
+}
+
+
+/* =================================
+   سلك السحب
+================================= */
+
+.pull-area{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.pull-string{
+    position:relative;
+
+    width:4px;
+    height:135px;
+
+    background:linear-gradient(
+        90deg,
+        #181818,
+        #999,
+        #222
+    );
+
+    cursor:grab;
+
+    touch-action:none;
+
+    transition:
+        transform .15s ease;
+}
+
+.pull-string:active{
+    cursor:grabbing;
+}
+
+
+/* كرة السحب */
+
+.pull-handle{
+    position:absolute;
+
+    bottom:-15px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:26px;
+    height:36px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            100deg,
+            #222,
+            #a5a5a5,
+            #252525
+        );
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.7);
+
+    transition:
+        box-shadow .4s ease;
+}
+
+body.lit .pull-handle{
+    box-shadow:
+        0 0 15px rgba(255,210,80,.3),
+        0 5px 12px rgba(0,0,0,.7);
+}
+
+
+/* =================================
+   نص السحب
+================================= */
+
+.pull-hint{
+    position:fixed;
+
+    top:335px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    color:#737b8c;
+
+    font-size:13px;
+
+    opacity:.9;
+
+    transition:
+        opacity .6s,
+        transform .6s;
+
+    z-index:5;
+}
+
+body.lit .pull-hint{
+    opacity:0;
+    transform:
+        translateX(-50%)
+        translateY(-10px);
+}
+
+
+/* =================================
+   بطاقة الدخول
+================================= */
+
+.login-card{
+    position:fixed;
+
+    z-index:4;
+
+    top:57%;
+    left:50%;
+
+    transform:
+        translate(-50%,-50%)
+        translateY(60px)
+        scale(.92);
+
+    width:min(380px,calc(100% - 35px));
+
+    padding:32px 28px;
+
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,27,42,.90),
+            rgba(7,11,20,.88)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.65),
+        inset 0 1px 0 rgba(255,255,255,.06);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    text-align:center;
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:
+        opacity 1s ease,
+        transform 1s cubic-bezier(.17,.67,.32,1.25);
+}
+
+body.lit .login-card{
+    opacity:1;
+    pointer-events:auto;
+
+    transform:
+        translate(-50%,-50%)
+        translateY(0)
+        scale(1);
+}
+
+
+/* =================================
+   أيقونة صغيرة
+================================= */
+
+.login-icon{
+    width:52px;
+    height:52px;
+
+    margin:0 auto 16px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    background:
+        rgba(255,207,76,.10);
+
+    border:
+        1px solid rgba(255,207,76,.22);
+
+    font-size:22px;
+
+    box-shadow:
+        0 0 25px rgba(255,200,60,.08);
+}
+
+
+/* =================================
+   العناوين
+================================= */
+
+.login-card h1{
+    font-size:25px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+    letter-spacing:.2px;
+}
+
+.subtitle{
+    color:#8993a6;
+
+    font-size:13px;
+
+    margin-bottom:25px;
+}
+
+
+/* =================================
+   INPUT
+================================= */
+
+.input-wrapper{
+    position:relative;
+
+    margin-bottom:15px;
+}
+
+.input-wrapper input{
+    width:100%;
+    height:53px;
+
+    padding:
+        0 17px;
+
+    border-radius:13px;
+
+    border:
+        1px solid rgba(255,255,255,.10);
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.045);
+
+    color:white;
+
+    font-size:15px;
+
+    transition:.3s;
+}
+
+.input-wrapper input::placeholder{
+    color:#687286;
+}
+
+.input-wrapper input:focus{
+    border-color:
+        rgba(255,210,80,.65);
+
+    background:
+        rgba(255,255,255,.07);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255,210,80,.07);
+}
+
+
+/* =================================
+   BUTTON
+================================= */
+
+.login-btn{
+    position:relative;
+
+    overflow:hidden;
+
+    width:100%;
+    height:53px;
+
+    border:0;
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffd34e,
+            #ffad00
+        );
+
+    color:#17120a;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:
+        0 10px 30px
+        rgba(255,177,0,.18);
+}
+
+.login-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 14px 35px
+        rgba(255,177,0,.28);
+}
+
+.login-btn:active{
+    transform:scale(.98);
+}
+
+
+/* لمعان الزر */
+
+.login-btn::after{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-100%;
+
+    width:50%;
+    height:100%;
+
+    transform:skewX(-20deg);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.45),
+            transparent
+        );
+
+    transition:.6s;
+}
+
+.login-btn:hover::after{
+    left:130%;
+}
+
+
+/* =================================
+   ERROR
+================================= */
+
+.error{
+    display:none;
+
+    margin-top:13px;
+
+    padding:9px;
+
+    border-radius:9px;
+
+    background:
+        rgba(239,68,68,.08);
+
+    border:
+        1px solid rgba(239,68,68,.15);
+
+    color:#ff7777;
+
+    font-size:12px;
+
+    animation:shake .35s;
+}
+
+@keyframes shake{
+    0%,100%{
+        transform:translateX(0);
+    }
+
+    25%{
+        transform:translateX(-6px);
+    }
+
+    75%{
+        transform:translateX(6px);
+    }
+}
+
+
+/* =================================
+   FOOTER
+================================= */
+
+.footer{
+    margin-top:20px;
+
+    color:#4e596c;
+
+    font-size:11px;
+}
+
+
+/* =================================
+   SUCCESS SCREEN
+================================= */
+
+.success{
+    position:fixed;
+
+    inset:0;
+
+    z-index:30;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    flex-direction:column;
+
+    background:
+        #02040a;
+}
+
+.success-icon{
+    width:75px;
+    height:75px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#22c55e;
+
+    font-size:32px;
+
+    box-shadow:
+        0 0 40px rgba(34,197,94,.3);
+
+    animation:pop .6s ease;
+}
+
+@keyframes pop{
+    0%{
+        transform:scale(0);
+    }
+
+    70%{
+        transform:scale(1.12);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+
+.success h2{
+    margin-top:18px;
+    font-size:22px;
+}
+
+.success p{
+    color:#7d8799;
+    margin-top:7px;
+    font-size:13px;
+}
+
+
+/* =================================
+   MOBILE
+================================= */
+
+@media(max-width:600px){
+
+    .top-wire{
+        height:80px;
+    }
+
+    .shade{
+        width:135px;
+        height:70px;
+    }
+
+    .pull-string{
+        height:110px;
+    }
+
+    .pull-hint{
+        top:300px;
+    }
+
+    .login-card{
+        top:59%;
+        padding:28px 22px;
+    }
+
+    .login-card h1{
+        font-size:23px;
+    }
+
+    .ambient-light{
+        width:550px;
+        height:550px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- الإضاءة -->
+<div class="ambient-light"></div>
+
+<!-- السقف -->
+<div class="ceiling"></div>
+
+
+<!-- ==========================
+     الأباجورة
+========================== -->
+
+<div class="lamp">
+
+    <div class="top-wire"></div>
+
+    <div class="shade">
+
+        <div class="bulb"></div>
+
+    </div>
+
+    <div class="pull-area">
+
+        <div
+            class="pull-string"
+            id="pullString"
+        >
+
+            <div class="pull-handle"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- تعليمات السحب -->
+
+<div class="pull-hint">
+    اسحب السلك لتشغيل الإضاءة
+</div>
+
+
+<!-- ==========================
+     LOGIN
+========================== -->
+
+<div class="login-card">
+
+    <div class="login-icon">
+        🔐
+    </div>
+
+    <h1>
+        مرحبًا بك
+    </h1>
+
+    <p class="subtitle">
+        أدخل رمز الدخول للوصول إلى النظام
+    </p>
+
+
+    <div class="input-wrapper">
+
+        <input
+            type="password"
+            id="passInput"
+            placeholder="أدخل رمز الدخول"
+            autocomplete="off"
+        >
+
+    </div>
+
+
+    <button
+        class="login-btn"
+        onclick="checkPassword()"
+    >
+        دخول
+    </button>
+
+
+    <div
+        class="error"
+        id="errorMsg"
+    >
+        ⚠️ رمز الدخول غير صحيح
+    </div>
+
+
+    <div class="footer">
+        🔒 نظام دخول آمن
+    </div>
+
+</div>
+
+
+<!-- ==========================
+     SUCCESS
+========================== -->
+
+<div
+    class="success"
+    id="successScreen"
+>
+
+    <div class="success-icon">
+        ✓
+    </div>
+
+    <h2>
+        تم تسجيل الدخول بنجاح
+    </h2>
+
+    <p>
+        جاري فتح الصفحة...
+    </p>
+
+</div>
+
+
+<script>
+
+/* =================================
+   السلك
+================================= */
+
+const pullString =
+    document.getElementById("pullString");
+
+let dragging = false;
+let startY = 0;
+let pulled = false;
+
+
+/* =================================
+   بداية السحب
+================================= */
+
+function startPull(e){
+
+    dragging = true;
+
+    startY =
+        e.clientY ??
+        e.touches[0].clientY;
+
+    pullString.style.transition =
+        "none";
+}
+
+
+/* =================================
+   أثناء السحب
+================================= */
+
+function movePull(e){
+
+    if(!dragging) return;
+
+    const currentY =
+        e.clientY ??
+        e.touches[0].clientY;
+
+    const distance =
+        currentY - startY;
+
+    if(distance > 0){
+
+        const amount =
+            Math.min(distance,70);
+
+        pullString.style.transform =
+            `translateY(${amount}px)`;
+    }
+
+
+    /*
+       تشغيل الأباجورة
+       بعد سحب السلك
+    */
+
+    if(
+        distance > 35 &&
+        !pulled
+    ){
+
+        pulled = true;
+
+        turnLightOn();
+    }
+}
+
+
+/* =================================
+   نهاية السحب
+================================= */
+
+function endPull(){
+
+    if(!dragging) return;
+
+    dragging = false;
+
+    pullString.style.transition =
+        "transform .35s ease";
+
+    pullString.style.transform =
+        "translateY(0)";
+}
+
+
+/* =================================
+   تشغيل النور
+================================= */
+
+function turnLightOn(){
+
+    document.body.classList.add("lit");
+
+    /*
+       صوت Click بسيط باستخدام Web Audio
+       بدون أي ملف خارجي
+    */
+
+    try{
+
+        const AudioContext =
+            window.AudioContext ||
+            window.webkitAudioContext;
+
+        const audio =
+            new AudioContext();
+
+        const oscillator =
+            audio.createOscillator();
+
+        const gain =
+            audio.createGain();
+
+        oscillator.frequency.value =
+            500;
+
+        gain.gain.value =
+            .04;
+
+        oscillator.connect(gain);
+
+        gain.connect(audio.destination);
+
+        oscillator.start();
+
+        oscillator.stop(
+            audio.currentTime + .07
+        );
+
+    }catch(e){}
+
+}
+
+
+/* =================================
+   Mouse
+================================= */
+
+pullString.addEventListener(
+    "mousedown",
+    startPull
+);
+
+document.addEventListener(
+    "mousemove",
+    movePull
+);
+
+document.addEventListener(
+    "mouseup",
+    endPull
+);
+
+
+/* =================================
+   Touch
+================================= */
+
+pullString.addEventListener(
+    "touchstart",
+    startPull,
+    {passive:true}
+);
+
+document.addEventListener(
+    "touchmove",
+    movePull,
+    {passive:true}
+);
+
+document.addEventListener(
+    "touchend",
+    endPull
+);
+
+
+/* =================================
+   تسجيل الدخول
+================================= */
+
+function checkPassword(){
+
+    const password = "1234";
+
+    const userPass =
+        document.getElementById(
+            "passInput"
+        ).value;
+
+    const error =
+        document.getElementById(
+            "errorMsg"
+        );
+
+
+    if(userPass === password){
+
+        sessionStorage.setItem(
+            "authenticated",
+            "true"
+        );
+
+        error.style.display =
+            "none";
+
+
+        document.getElementById(
+            "successScreen"
+        ).style.display =
+            "flex";
+
+
+        setTimeout(() => {
+
+            window.location.href =
+                "index.html";
+
+        },1200);
+
+    }else{
+
+        error.style.display =
+            "block";
+
+        document.getElementById(
+            "passInput"
+        ).value = "";
+
+        document.getElementById(
+            "passInput"
+        ).focus();
+    }
+}
+
+
+/* =================================
+   Enter
+================================= */
+
+document
+.getElementById("passInput")
+.addEventListener(
+    "keydown",
+    function(e){
+
+        if(e.key === "Enter"){
+            checkPassword();
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
